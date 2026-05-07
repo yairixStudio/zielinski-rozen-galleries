@@ -1,14 +1,5 @@
-/* ========================================================================
-   Z&R Art Galleries — Stylesheet
-   Hebrew RTL site, monochrome palette, Copperplate / Fb Ezmel typography
-   ======================================================================== */
-
-/* ---------- Fonts ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Solway:wght@300;400&family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Cormorant+Garamond:wght@300;400;500;700&display=swap');
-
-/* Local Hebrew font (substitute for Fb Ezmel) — Frank Ruhl Libre is the closest free alternative
-   Local English display font (substitute for Copperplate) — Cormorant Garamond is closest free alt
-   On macOS Copperplate is system-installed — we'll preference it where available */
+/* Z R Art Galleries Stylesheet  Hebrew RTL site monochrome palette */
+/* Fonts are loaded via link tag in HTML head, not @import here */
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
