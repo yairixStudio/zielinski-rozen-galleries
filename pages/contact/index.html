@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>יצירת קשר — ZIELINSKI &amp; ROZEN</title>
+<link rel="icon" type="image/svg+xml" href="../../assets/icons/logo.svg">
+<link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+<header class="nav">
+    <a href="../../index.html" class="nav__logo"><img src="../../assets/icons/logo.svg" alt="Z&amp;R"></a>
+    <button class="nav__toggle" data-menu><span></span><span></span><span></span></button>
+    <nav class="nav__menu">
+        <a href="../open-call/index.html" class="nav__link">open call</a>
+        <a href="../exhibitions/index.html" class="nav__link">exhibitions</a>
+        <a href="../works/index.html" class="nav__link">the art works</a>
+        <a href="../galleries/index.html" class="nav__link">the galleries</a>
+        <a href="../press/index.html" class="nav__link">press &amp; events</a>
+    </nav>
+</header>
+
+<section class="section">
+    <div class="section__head">
+        <h1 class="section__title">יצירת קשר</h1>
+        <h2 class="section__subtitle">contact</h2>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;">
+        <div>
+            <h3 style="font-family:var(--font-he); font-size:24px; margin-bottom:16px; text-align:right;">דברו איתנו</h3>
+            <p style="font-family:var(--font-he); font-size:18px; line-height:1.8; text-align:right; margin-bottom:8px;">
+                אוצרת ראשית: <a href="mailto:korinalove5@gmail.com" class="text-link">korinalove5@gmail.com</a>
+            </p>
+            <p style="font-family:var(--font-he); font-size:18px; line-height:1.8; text-align:right; margin-bottom:24px;">
+                אינסטגרם: <a href="https://instagram.com/zielinskirozen.gallery" class="text-link" target="_blank" rel="noopener">@zielinskirozen.gallery</a>
+            </p>
+
+            <h3 style="font-family:var(--font-he); font-size:24px; margin:24px 0 16px; text-align:right;">הגלריות שלנו</h3>
+            <p style="font-family:var(--font-he); font-size:16px; line-height:1.7; text-align:right;">
+                <strong>גלריית כיכר המדינה</strong><br>
+                ז'בוטינסקי 131, תל אביב<br>
+                א'-ה' 10:00–19:00 · ו' 10:00–14:00 · שבת סגור
+            </p>
+            <p style="font-family:var(--font-he); font-size:16px; line-height:1.7; text-align:right; margin-top:16px;">
+                <strong>גלריית כיכר דיזינגוף</strong><br>
+                כיכר דיזינגוף, תל אביב
+            </p>
+            <p style="font-family:var(--font-he); font-size:16px; line-height:1.7; text-align:right; margin-top:16px;">
+                <strong>גלריית שוק הפשפשים</strong><br>
+                שוק הפשפשים, תל אביב
+            </p>
+        </div>
+
+        <form style="display:flex; flex-direction:column; gap:16px;" onsubmit="event.preventDefault(); alert('תודה — נחזור אליך בהקדם.'); this.reset();">
+            <label style="font-family:var(--font-he); font-size:14px; color:var(--c-grey-meta); text-align:right;">שם מלא
+                <input type="text" required style="display:block; width:100%; margin-top:4px; padding:12px; border:1px solid var(--c-divider); font-family:var(--font-he); font-size:16px;">
+            </label>
+            <label style="font-family:var(--font-he); font-size:14px; color:var(--c-grey-meta); text-align:right;">אימייל
+                <input type="email" required style="display:block; width:100%; margin-top:4px; padding:12px; border:1px solid var(--c-divider); font-family:var(--font-he); font-size:16px;">
+            </label>
+            <label style="font-family:var(--font-he); font-size:14px; color:var(--c-grey-meta); text-align:right;">הודעה
+                <textarea required rows="6" style="display:block; width:100%; margin-top:4px; padding:12px; border:1px solid var(--c-divider); font-family:var(--font-he); font-size:16px; resize:vertical;"></textarea>
+            </label>
+            <button type="submit" style="margin-top:8px; padding:16px; background:var(--c-black); color:var(--c-white); font-family:var(--font-button); font-size:14px; letter-spacing:0.1em; text-transform:uppercase; border:0; cursor:pointer;">שלח / send</button>
+        </form>
+    </div>
+</section>
+
+<section class="newsletter">
+    <div class="newsletter__inner">
+        <h2 class="newsletter__title">Stay Informed</h2>
+        <form class="newsletter__form" onsubmit="event.preventDefault(); alert('Thanks!'); this.reset();">
+            <input class="newsletter__input" type="email" name="email" placeholder="Email Address" required>
+            <button class="newsletter__submit" type="submit">SUBSCRIBE</button>
+        </form>
+    </div>
+</section>
+
+<footer class="footer">
+    <ul class="footer__row">
+        <li><a href="index.html">יצירת קשר</a></li>
+        <li><a href="accessibility.html">הצהרת נגישות</a></li>
+    </ul>
+    <ul class="footer__row">
+        <li><a href="../galleries/hamedina.html">גלריית כיכר המדינה</a></li>
+        <li><a href="../galleries/dizengoff.html">גלריית כיכר דיזינגוף</a></li>
+        <li><a href="../galleries/flea.html">גלריית שוק הפשפשים</a></li>
+    </ul>
+    <p class="footer__copy">© 2026 THE ART GALLERY ZIELINSKI &amp; ROZEN — ALL RIGHTS RESERVED.</p>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>
