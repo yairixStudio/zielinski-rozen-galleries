@@ -1,17 +1,17 @@
 <!doctype html>
-<!-- Z&R homepage v3 — correct images -->
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>THE ART GALLERIES — ZIELINSKI &amp; ROZEN</title>
-<meta name="description" content="גלריות האומנות של זילינסקי ורוזן בתל אביב. תערוכות, אמנים, יצירות, ארועי גלריה ופתיחת קולות קוראים.">
+<meta name="description" content="גלריות האומנות של זילינסקי ורוזן בתל אביב.">
 <link rel="icon" type="image/svg+xml" href="https://yairixstudio.github.io/zielinski-rozen-galleries/assets/icons/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Solway:wght@300;400&family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Cormorant+Garamond:wght@300;400;500;700&display=swap">
-<style>/* Z R Art Galleries Stylesheet  Hebrew RTL site monochrome palette */
-/* Fonts are loaded via link tag in HTML head, not @import here */
+<style>/* Z R Art Galleries  Mobile-first stylesheet  Hebrew RTL site */
+/* Mobile = 390px viewport (Figma reference). Desktop kicks in at 768px+ */
+/* Fonts loaded via link tag in HTML head */
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -27,12 +27,12 @@ a { color: inherit; text-decoration: none; }
     --c-near-black:   #1A1C1C;
     --c-white:        #FFFFFF;
     --c-bg-soft:      #EEF0EF;
-    --c-bg-paper:     #FAFAFA;
     --c-divider:      #D8D8D8;
     --c-grey-mid:     #989898;
     --c-grey-soft:    #828282;
     --c-grey-meta:    #6B7280;
     --c-grey-dark:    #515151;
+    --c-grey-dot:     rgba(255,255,255,0.32);
 
     --font-en:    'Copperplate', 'Copperplate Gothic Light', 'Cormorant Garamond', serif;
     --font-en-display: 'Copperplate', 'Cormorant Garamond', serif;
@@ -40,12 +40,10 @@ a { color: inherit; text-decoration: none; }
     --font-button: 'Inter', system-ui, sans-serif;
     --font-banner: 'Solway', 'Cormorant Garamond', serif;
 
-    --container-max: 1440px;
-    --container-pad: 96px;
-    --container-pad-mobile: 16px;
+    --pad-mobile: 16px;
+    --pad-desktop: 96px;
 
-    --header-h: 53px;
-    --header-h-mobile: 52px;
+    --header-h: 52px;
 }
 
 html { direction: rtl; }
@@ -55,58 +53,69 @@ body {
     background: var(--c-white);
     line-height: 1.4;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
 }
 
-/* ---------- Type utilities ---------- */
-.font-en { font-family: var(--font-en); letter-spacing: 0.02em; }
-.font-he { font-family: var(--font-he); }
-.upper { text-transform: uppercase; }
-.lower { text-transform: lowercase; }
-.center { text-align: center; }
-.left { text-align: left; }
-.right { text-align: right; }
-
-/* ---------- Layout containers ---------- */
-.container {
-    width: 100%;
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding-left: var(--container-pad);
-    padding-right: var(--container-pad);
-}
-@media (max-width: 768px) {
-    .container { padding-left: var(--container-pad-mobile); padding-right: var(--container-pad-mobile); }
-}
-
 /* ========================================================================
-   NAVIGATION
+   NAVIGATION  (mobile-first: SVG-only logo + hamburger; desktop adds links)
    ======================================================================== */
 .nav {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--c-white);
+    background: var(--c-bg-soft);
     height: var(--header-h);
-    padding: 8px 32px;
+    padding: 8px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     direction: ltr;
 }
 .nav__logo { display: inline-flex; align-items: center; }
-.nav__logo svg, .nav__logo img { height: 32px; width: auto; }
-.nav__menu {
-    display: flex;
-    align-items: center;
-    gap: 28px;
+.nav__logo svg, .nav__logo img { height: 28px; width: auto; }
+
+.nav__toggle {
+    display: block;
+    width: 32px; height: 24px;
+    position: relative;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
 }
+.nav__toggle span {
+    position: absolute; left: 0; right: 0;
+    height: 1.5px;
+    background: var(--c-black);
+    transition: transform .2s ease, opacity .2s ease;
+}
+.nav__toggle span:nth-child(1) { top: 4px; }
+.nav__toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.nav__toggle span:nth-child(3) { bottom: 4px; }
+body[data-menu-open="true"] .nav__toggle span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+body[data-menu-open="true"] .nav__toggle span:nth-child(2) { opacity: 0; }
+body[data-menu-open="true"] .nav__toggle span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+.nav__menu {
+    position: fixed;
+    inset: var(--header-h) 0 0 0;
+    background: var(--c-bg-soft);
+    flex-direction: column;
+    padding: 48px 32px;
+    gap: 32px;
+    align-items: center;
+    transform: translateY(-100%);
+    transition: transform .35s ease;
+    z-index: 99;
+    display: flex;
+}
+body[data-menu-open="true"] .nav__menu { transform: translateY(0); }
+body[data-menu-open="true"] { overflow: hidden; }
+
 .nav__link {
     font-family: var(--font-en);
     font-weight: 400;
-    font-size: 11px;
+    font-size: 22px;
     color: var(--c-black);
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -114,43 +123,22 @@ body {
     white-space: nowrap;
 }
 .nav__link:hover { opacity: .55; }
-.nav__toggle {
-    display: none;
-    width: 28px; height: 20px;
-    position: relative;
-    cursor: pointer;
-}
-.nav__toggle span {
-    position: absolute; left: 0; right: 0;
-    height: 2px;
-    background: var(--c-black);
-}
-.nav__toggle span:nth-child(1) { top: 0; }
-.nav__toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
-.nav__toggle span:nth-child(3) { bottom: 0; }
 
-@media (max-width: 900px) {
-    .nav {
-        height: var(--header-h-mobile);
-        padding: 8px 16px;
-        background: var(--c-bg-soft);
-    }
-    .nav__logo svg, .nav__logo img { height: 28px; }
+@media (min-width: 768px) {
+    .nav { background: var(--c-white); padding: 8px 32px; }
+    .nav__logo svg, .nav__logo img { height: 32px; }
+    .nav__toggle { display: none; }
     .nav__menu {
-        position: fixed;
-        inset: var(--header-h-mobile) 0 0 0;
-        background: var(--c-bg-soft);
-        flex-direction: column;
-        padding: 32px 16px;
-        gap: 24px;
-        align-items: flex-start;
-        transform: translateX(-100%);
-        transition: transform .3s ease;
-        z-index: 99;
+        position: static;
+        inset: auto;
+        background: transparent;
+        flex-direction: row;
+        padding: 0;
+        gap: 28px;
+        transform: none;
+        transition: none;
     }
-    body[data-menu-open="true"] .nav__menu { transform: translateX(0); }
-    .nav__link { font-size: 22px; }
-    .nav__toggle { display: block; }
+    .nav__link { font-size: 11px; }
 }
 
 /* ========================================================================
@@ -159,371 +147,569 @@ body {
 .announcement {
     background: var(--c-black);
     color: var(--c-white);
-    padding: 8px 16px;
+    padding: 28px 24px;
     text-align: center;
     font-family: var(--font-en);
     font-weight: 400;
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+}
+@media (min-width: 768px) {
+    .announcement { padding: 12px 16px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; }
 }
 
 /* ========================================================================
-   HERO (homepage) — centered single column
+   HOMEPAGE — HERO  (mobile: title above, image full-bleed, scroll, desc)
    ======================================================================== */
 .hero {
-    padding: 56px 32px 32px;
+    padding: 32px 16px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    gap: 24px;
+}
+.hero__title-block {
+    text-align: left;
+    direction: ltr;
 }
 .hero__title {
     font-family: var(--font-en-display);
     font-weight: 700;
-    font-size: 44px;
-    line-height: 1.1;
+    font-size: 36px;
+    line-height: 1;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--c-black);
 }
 .hero__subtitle {
     font-family: var(--font-en);
-    font-weight: 400;
-    font-size: 24px;
-    letter-spacing: 0.08em;
-    margin-top: 4px;
+    font-weight: 300;
+    font-size: 30px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-}
-.hero__desc {
-    font-family: var(--font-he);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 1.7;
-    margin-top: 32px;
     color: var(--c-black);
-    max-width: 520px;
+    margin-top: 4px;
 }
 .hero__image {
-    width: min(420px, 80%);
-    aspect-ratio: 1;
-    margin-top: 32px;
+    width: 100%;
+    aspect-ratio: 358 / 297;
     background: var(--c-divider) center/cover no-repeat;
 }
+.hero__bottom { display: flex; flex-direction: column; gap: 120px; }
+.hero__scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    font-family: var(--font-en);
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--c-black);
+}
+.hero__scroll svg { width: 16px; height: 16px; fill: currentColor; }
+.hero__desc {
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: right;
+    color: var(--c-black);
+}
 
-@media (max-width: 900px) {
-    .hero { padding: 32px 16px; }
-    .hero__title { font-size: 32px; }
-    .hero__subtitle { font-size: 18px; }
-    .hero__desc { font-size: 13px; }
+@media (min-width: 768px) {
+    .hero {
+        padding: 56px 32px 32px;
+        align-items: center;
+        text-align: center;
+    }
+    .hero__title-block { text-align: center; }
+    .hero__title { font-size: 60px; }
+    .hero__subtitle { font-size: 28px; }
+    .hero__image { width: min(420px, 60%); aspect-ratio: 1; order: 4; }
+    .hero__bottom { gap: 16px; max-width: 520px; align-items: center; order: 3; }
+    .hero__scroll { display: none; }
+    .hero__desc { text-align: center; }
 }
 
 /* ========================================================================
    SECTION TEMPLATE
    ======================================================================== */
 .section {
-    padding: 56px 32px;
+    padding: 32px 16px;
 }
 .section--soft { background: var(--c-bg-soft); }
 .section--dark { background: var(--c-black); color: var(--c-white); }
 
 .section__head {
-    margin-bottom: 32px;
-    text-align: center;
+    margin-bottom: 24px;
     direction: ltr;
 }
+.section__head--center { text-align: center; }
 .section__title {
-    font-family: var(--font-en);
+    font-family: var(--font-en-display);
     font-weight: 700;
-    font-size: 18px;
-    letter-spacing: 0.18em;
+    font-size: 36px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
+    line-height: 1;
 }
 .section__subtitle {
     font-family: var(--font-en);
-    font-weight: 400;
-    font-size: 14px;
-    letter-spacing: 0.16em;
+    font-weight: 300;
+    font-size: 36px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    margin-top: 4px;
-    color: var(--c-grey-meta);
+    line-height: 1;
 }
 .section__title--big {
-    font-family: var(--font-en-display);
-    font-weight: 700;
-    font-size: 80px;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    font-size: 58px;
+}
+.section__subtitle--big {
+    font-size: 91px;
+    margin-top: -16px;
 }
 
-.section--narrow { max-width: 980px; margin: 0 auto; }
-
-@media (max-width: 900px) {
-    .section { padding: 32px 16px; }
-    .section__title { font-size: 16px; }
-    .section__subtitle { font-size: 12px; }
-    .section__title--big { font-size: 48px; }
+@media (min-width: 768px) {
+    .section { padding: 56px 32px; }
+    .section__head { margin-bottom: 32px; text-align: center; }
+    .section__title { font-size: 48px; }
+    .section__subtitle { font-size: 36px; }
+    .section__title--big { font-size: 80px; }
+    .section__subtitle--big { font-size: 80px; margin-top: 4px; }
 }
 
 /* ========================================================================
-   OPEN CALL CARDS  (homepage)
+   OPEN CALL  (homepage: dual-image collage above info bar)
    ======================================================================== */
-.opencall-grid {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    max-width: 720px;
-    margin: 0 auto;
-    direction: ltr;
+.opencall-section { padding: 32px 16px; display: flex; flex-direction: column; gap: 16px; }
+.opencall-title {
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 24px;
+    text-align: left;
+    color: var(--c-black);
 }
-.opencall-card { display: block; flex: 1; max-width: 320px; }
-.opencall-card__image {
+.opencall-section .divider {
+    height: 1px;
+    background: var(--c-divider);
+    margin: 0;
+}
+.opencall-collage {
+    position: relative;
     width: 100%;
-    aspect-ratio: 3/4;
-    background: var(--c-divider) center/cover no-repeat;
-    margin-bottom: 12px;
+    height: 300px;
+    overflow: visible;
 }
-.opencall-card__meta {
-    display: flex;
-    justify-content: space-between;
+.opencall-collage__main {
+    position: absolute;
+    right: 12%;
+    top: 0;
+    width: 60%;
+    height: 80%;
+    background: var(--c-divider) center/cover no-repeat;
+}
+.opencall-collage__side {
+    position: absolute;
+    left: -8%;
+    top: 22%;
+    width: 38%;
+    height: 50%;
+    background: var(--c-divider) center/cover no-repeat;
+    opacity: 0.85;
+}
+.opencall-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
     font-family: var(--font-en);
     font-weight: 300;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--c-grey-meta);
+    font-size: 14px;
+    color: var(--c-black);
+    letter-spacing: 0.04em;
 }
-.opencall-card__status { color: var(--c-black); font-weight: 400; }
+.opencall-bar__date { text-align: center; }
+.opencall-bar__loc { text-align: right; }
 
-@media (max-width: 900px) {
-    .opencall-grid { gap: 16px; padding: 0 16px; }
+@media (min-width: 768px) {
+    .opencall-section { padding: 56px 32px; max-width: 800px; margin: 0 auto; gap: 32px; }
+    .opencall-title { text-align: center; font-size: 18px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; }
+    .opencall-section .divider { display: none; }
+    .opencall-collage { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; height: auto; max-width: 720px; margin: 0 auto; }
+    .opencall-collage__main, .opencall-collage__side { position: static; width: 100%; height: auto; aspect-ratio: 3/4; opacity: 1; }
+    .opencall-bar { max-width: 720px; margin: 0 auto; }
 }
 
 /* ========================================================================
-   PAST EXHIBITIONS (homepage 4-up)
+   EXHIBITIONS NOW + ARCHIVE  (homepage)
    ======================================================================== */
-.exhibitions-archive {
-    display: flex;
-    justify-content: center;
-    gap: 64px;
-    max-width: 1100px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-}
-.exhibitions-row { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 320px; max-width: 520px; }
-.exhibitions-row__nums {
-    display: flex;
-    gap: 8px;
-    font-family: var(--font-en);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--c-grey-meta);
-    direction: ltr;
-}
-.exhibitions-row__nums span { flex: 1; text-align: center; }
-.exhibitions-row__title {
-    font-family: var(--font-he);
-    font-weight: 400;
-    font-size: 14px;
-    text-align: center;
-    color: var(--c-grey-meta);
-    margin-bottom: 4px;
-}
-.exhibitions-grid {
+.exh-now { padding: 32px 16px; display: flex; flex-direction: column; gap: 32px; }
+.exh-now__pair {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    grid-template-columns: 177fr 177fr;
+    gap: 4px;
 }
-.exhibitions-grid__item {
+.exh-now__col { display: flex; flex-direction: column; gap: 8px; }
+.exh-now__col-title {
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 14px;
+    text-align: right;
+    color: var(--c-grey-meta);
+}
+.exh-now__card {
     position: relative;
-    aspect-ratio: 1;
+    width: 100%;
+    aspect-ratio: 177/214;
     background: var(--c-divider) center/cover no-repeat;
     overflow: hidden;
 }
-.exhibitions-grid__num { display: none; }
-@media (max-width: 900px) {
-    .exhibitions-archive { flex-direction: column; gap: 32px; }
-    .exhibitions-row { min-width: 0; }
+.exh-now__card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 100%);
+}
+.exh-now__status {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    color: var(--c-white);
+    font-family: var(--font-en);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    z-index: 1;
+}
+.exh-now__overlay {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    color: var(--c-white);
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1.4;
+    z-index: 1;
+}
+
+.exh-now__artists {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+}
+.exh-now__artists-label {
+    font-family: var(--font-en);
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    color: var(--c-black);
+    text-align: right;
+    text-transform: lowercase;
+}
+.artists-row {
+    display: flex;
+    gap: 6px;
+}
+.artists-row .artist-tile {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/* Archive (4-thumbnail row on mobile, scrollable) */
+.exh-archive { padding: 32px 16px; display: flex; flex-direction: column; gap: 24px; background: var(--c-bg-soft); }
+.exh-archive__pills {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 16px;
+}
+.exh-archive__pill {
+    color: var(--c-grey-soft);
+    padding-bottom: 4px;
+}
+.exh-archive__pill[aria-current="true"] {
+    color: var(--c-black);
+    border-bottom: 0.5px solid var(--c-black);
+}
+.exh-archive__row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+}
+.exh-archive__col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scroll-snap-align: start;
+}
+.exh-archive__num {
+    font-family: var(--font-en);
+    font-weight: 400;
+    font-size: 12px;
+    text-align: right;
+    color: var(--c-black);
+}
+.exh-archive__thumb {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--c-divider) center/cover no-repeat;
+}
+
+@media (min-width: 768px) {
+    .exh-now { padding: 56px 32px; max-width: 1200px; margin: 0 auto; }
+    .exh-now__pair { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .exh-now__card { aspect-ratio: 4/5; }
+    .exh-archive { padding: 56px 32px; }
+    .exh-archive__row { gap: 16px; max-width: 1100px; margin: 0 auto; }
 }
 
 /* ========================================================================
-   "THE / ART / WORKS / MORE"  (homepage editorial section)
+   HOMEPAGE WORK SECTION  (mobile: absolute collage / desktop: editorial rows)
    ======================================================================== */
 .work-section {
-    padding: 64px 32px;
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
+    padding: 32px 16px;
+}
+.work-collage {
+    position: relative;
+    width: 100%;
+    height: 696px;
     direction: ltr;
 }
-.work-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    column-gap: 80px;
-    margin-bottom: 80px;
+.work-collage__img {
+    position: absolute;
+    width: 174px;
+    height: 174px;
+    background: var(--c-divider) center/cover no-repeat;
 }
-.work-row:last-child { margin-bottom: 0; }
-.work-row__word {
+.work-collage__img--1 { left: 0;   top: 0; }
+.work-collage__img--2 { right: 0;  top: 174px; }
+.work-collage__img--3 { left: 0;   top: 348px; }
+.work-collage__img--4 { right: 0;  top: 522px; }
+.work-collage__word {
+    position: absolute;
     font-family: var(--font-en-display);
     font-weight: 700;
-    font-size: 56px;
+    font-size: 36px;
     line-height: 1;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
+    color: var(--c-black);
 }
-.work-row__word--light { font-weight: 300; }
-.work-row__word--more {
-    font-weight: 400;
-    font-size: 28px;
-    letter-spacing: 0.15em;
+.work-collage__word--the   { font-weight: 300; left: calc(50% + 10px); top: 60px; }
+.work-collage__word--art   { font-weight: 700; left: 30px; top: 245px; }
+.work-collage__word--works { font-weight: 700; right: 0; top: 420px; left: auto; }
+.work-collage__more {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-en);
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
 }
-.work-row__word--more::before { content: '‹ '; }
-.work-row__image {
-    width: 100%;
-    aspect-ratio: 3/4;
-    background: var(--c-divider) center/cover no-repeat;
-    max-width: 360px;
+.work-collage__more::before {
+    content: '';
+    display: inline-block;
+    width: 0; height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-right: 12px solid currentColor;
+    margin-right: 8px;
 }
 
-/* Alternating: word right, image left  /  word left, image right */
-.work-row--word-right { justify-items: end; }
-.work-row--word-right .work-row__word  { order: 2; }
-.work-row--word-right .work-row__image { order: 1; justify-self: start; }
-
-.work-row--word-left { justify-items: start; }
-.work-row--word-left .work-row__word   { order: 1; }
-.work-row--word-left .work-row__image  { order: 2; justify-self: end; }
-
-@media (max-width: 900px) {
-    .work-section { padding: 32px 16px; }
-    .work-row { grid-template-columns: 1fr; column-gap: 0; row-gap: 16px; margin-bottom: 48px; justify-items: center !important; }
-    .work-row__word { font-size: 36px; }
-    .work-row__image { max-width: 280px; }
-    .work-row--word-right .work-row__word, .work-row--word-left .work-row__word { order: 1; }
-    .work-row--word-right .work-row__image, .work-row--word-left .work-row__image { order: 2; justify-self: center; }
+@media (min-width: 768px) {
+    .work-section { padding: 56px 32px; max-width: 1200px; margin: 0 auto; }
+    .work-collage { display: none; }
+    .work-rows { display: flex; flex-direction: column; gap: 80px; direction: ltr; }
+    .work-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        column-gap: 80px;
+    }
+    .work-row__word {
+        font-family: var(--font-en-display);
+        font-weight: 700;
+        font-size: 80px;
+        line-height: 1;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+    .work-row__word--light { font-weight: 300; }
+    .work-row__word--more { font-weight: 400; font-size: 36px; }
+    .work-row__word--more::before { content: '‹ '; }
+    .work-row__image {
+        width: 100%;
+        aspect-ratio: 3/4;
+        background: var(--c-divider) center/cover no-repeat;
+        max-width: 360px;
+    }
+    .work-row--word-right { justify-items: end; }
+    .work-row--word-right .work-row__word { order: 2; }
+    .work-row--word-right .work-row__image { order: 1; justify-self: start; }
+    .work-row--word-left { justify-items: start; }
+    .work-row--word-left .work-row__word { order: 1; }
+    .work-row--word-left .work-row__image { order: 2; justify-self: end; }
+}
+@media (max-width: 767px) {
+    .work-rows { display: none; }
 }
 
 /* ========================================================================
    INSTAGRAM STRIP
    ======================================================================== */
-.ig-section { direction: ltr; padding: 32px 32px 24px; }
+.ig-section {
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    direction: ltr;
+}
 .ig-section__title {
-    font-family: var(--font-en);
+    font-family: var(--font-en-display);
     font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.16em;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    margin-bottom: 12px;
     text-align: left;
-    line-height: 1.3;
 }
-.ig-section__title small {
-    display: block;
-    font-weight: 400;
-    font-size: 14px;
-    letter-spacing: 0.16em;
-}
-.ig-section__handle { display: none; }
-.ig-grid {
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
+.ig-strip {
+    display: flex;
     gap: 4px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 4px;
 }
-.ig-grid__item {
+.ig-strip__item {
+    flex: 0 0 calc(25% - 3px);
     aspect-ratio: 1;
     background: var(--c-divider) center/cover no-repeat;
+    scroll-snap-align: start;
 }
-@media (max-width: 900px) {
-    .ig-section { padding: 24px 16px; }
-    .ig-grid {
-        display: flex;
-        gap: 4px;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-    }
-    .ig-grid__item { flex: 0 0 33%; scroll-snap-align: start; }
+
+@media (min-width: 768px) {
+    .ig-section { padding: 56px 32px; max-width: 1200px; margin: 0 auto; }
+    .ig-strip { display: grid; grid-template-columns: repeat(9, 1fr); overflow: visible; }
+    .ig-strip__item { flex: none; }
 }
 
 /* ========================================================================
-   GALLERIES LISTING
+   GALLERIES FOOTER (homepage 3 gallery rows on mobile, grid on desktop)
    ======================================================================== */
-.galleries-grid {
+.galleries-section { padding: 32px 16px; display: flex; flex-direction: column; gap: 16px; }
+
+.gallery-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    max-width: 1200px;
-    margin: 0 auto;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: center;
 }
-.gallery-card { display: flex; flex-direction: column; gap: 8px; }
-.gallery-card__image {
-    aspect-ratio: 4/3;
+.gallery-row__media { display: flex; flex-direction: column; gap: 8px; }
+.gallery-row__image {
+    width: 100%;
+    aspect-ratio: 174/207;
     background: var(--c-divider) center/cover no-repeat;
-    margin-bottom: 8px;
+    position: relative;
+    overflow: hidden;
 }
-.gallery-card__name {
-    font-family: var(--font-he);
-    font-weight: 500;
+.gallery-row__image--soon::after {
+    content: 'coming soon';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(27,27,27,0.7);
+    color: var(--c-white);
+    font-family: var(--font-en);
+    font-weight: 400;
     font-size: 16px;
-    text-align: center;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
-.gallery-card__addr {
+.gallery-row__addr {
+    text-align: right;
     font-family: var(--font-he);
-    font-weight: 300;
-    font-size: 13px;
-    text-align: center;
-    color: var(--c-grey-meta);
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--c-black);
 }
-.gallery-card__hours {
+.gallery-row__hours {
     font-family: var(--font-he);
     font-weight: 300;
     font-size: 12px;
     color: var(--c-grey-meta);
-    text-align: center;
+    text-align: right;
 }
-.gallery-card__hours li { margin-bottom: 2px; }
+.gallery-row__hours li { margin-bottom: 2px; }
+.gallery-row__name {
+    font-family: var(--font-he);
+    font-weight: 400;
+    font-size: 22px;
+    text-align: center;
+    align-self: center;
+}
 
-@media (max-width: 900px) {
-    .galleries-grid { grid-template-columns: 1fr; }
+@media (min-width: 768px) {
+    .galleries-section { padding: 56px 32px; max-width: 1200px; margin: 0 auto; }
+    .galleries-section .gallery-rows {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+    }
+    .gallery-row {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .gallery-row__media { gap: 12px; }
+    .gallery-row__image { aspect-ratio: 4/3; }
+    .gallery-row__image--soon::after { font-size: 14px; }
+    .gallery-row__name { font-size: 18px; text-align: center; margin-top: 8px; }
+    .gallery-row__addr, .gallery-row__hours { text-align: center; font-size: 13px; }
 }
 
 /* ========================================================================
-   PRESS / EVENTS GRID
+   PRESS & EVENTS  (homepage)
    ======================================================================== */
-.press-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    max-width: 1100px;
-    margin: 0 auto;
-}
+.press-section { padding: 32px 16px; display: flex; flex-direction: column; gap: 24px; }
+.press-list { display: flex; flex-direction: column; gap: 24px; }
 .press-card {
     display: grid;
-    grid-template-columns: 110px 1fr;
+    grid-template-columns: 108px 1fr;
     gap: 16px;
-    align-items: start;
+    align-items: center;
 }
 .press-card__image {
+    width: 100%;
     aspect-ratio: 1;
     background: var(--c-divider) center/cover no-repeat;
 }
 .press-card__body { display: flex; flex-direction: column; gap: 4px; text-align: right; }
 .press-card__source {
     font-family: var(--font-he);
-    font-size: 11px;
-    font-weight: 400;
+    font-weight: 300;
+    font-size: 14px;
     color: var(--c-grey-meta);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
 }
 .press-card__title {
     font-family: var(--font-he);
     font-weight: 400;
-    font-size: 13px;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.45;
     color: var(--c-black);
 }
 .press-card__date {
@@ -535,368 +721,404 @@ body {
     letter-spacing: 0.08em;
 }
 
-@media (max-width: 900px) {
-    .press-grid { grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 768px) {
+    .press-section { padding: 56px 32px; max-width: 1100px; margin: 0 auto; }
+    .press-list { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .press-card__title { font-size: 15px; }
 }
 
 /* ========================================================================
-   NEWSLETTER  (Stay Informed)
+   NEWSLETTER & FOOTER
    ======================================================================== */
 .newsletter {
     background: var(--c-black);
     color: var(--c-white);
-    padding: 32px 32px;
+    padding: 24px 16px;
     direction: ltr;
 }
-.newsletter__inner {
-    max-width: 360px;
-}
+.newsletter__inner { max-width: 360px; margin: 0 auto; }
 .newsletter__title {
     font-family: var(--font-en);
     font-weight: 400;
-    font-size: 13px;
-    letter-spacing: 0.16em;
-    margin-bottom: 16px;
+    font-size: 24px;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    margin-bottom: 24px;
     text-align: left;
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
-.newsletter__form { display: flex; flex-direction: column; gap: 16px; }
+.newsletter__form { display: flex; flex-direction: column; gap: 18px; padding-top: 17px; }
 .newsletter__input {
     border-bottom: 1px solid var(--c-white);
-    padding: 8px 0;
+    padding: 13px 0 14px;
     color: var(--c-white);
     font-family: var(--font-en);
     font-weight: 400;
-    font-size: 12px;
-    letter-spacing: 0.08em;
+    font-size: 14px;
+    letter-spacing: 0.04em;
     width: 100%;
     text-align: left;
 }
-.newsletter__input::placeholder { color: var(--c-white); opacity: .7; }
+.newsletter__input::placeholder { color: var(--c-white); opacity: .85; }
 .newsletter__submit {
     border: 1px solid var(--c-white);
-    padding: 10px 0;
-    width: 140px;
+    padding: 16px 0;
+    width: 100%;
     color: var(--c-white);
     font-family: var(--font-button);
     font-weight: 400;
-    font-size: 11px;
-    letter-spacing: 0.16em;
+    font-size: 12px;
+    line-height: 1.33;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     cursor: pointer;
     transition: background .2s, color .2s;
 }
 .newsletter__submit:hover { background: var(--c-white); color: var(--c-black); }
-
-@media (max-width: 900px) {
-    .newsletter { padding: 24px 16px; }
+@media (min-width: 768px) {
+    .newsletter { padding: 32px 96px; }
+    .newsletter__inner { margin: 0; }
 }
 
-/* ========================================================================
-   FOOTER
-   ======================================================================== */
 .footer {
     background: var(--c-black);
     color: var(--c-white);
-    padding: 24px 32px 24px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 24px;
+    padding: 24px 16px;
     direction: ltr;
 }
-.footer__left { display: flex; flex-direction: column; gap: 12px; }
+.footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
 .footer__copy {
     font-family: var(--font-en);
     font-weight: 300;
-    font-size: 9px;
-    line-height: 1.6;
+    font-size: 11px;
+    line-height: 1.5;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--c-grey-meta);
-    max-width: 360px;
-    margin-top: 8px;
+    text-align: center;
+    max-width: 226px;
+}
+.footer__links-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    direction: rtl;
+    font-family: var(--font-he);
+    font-size: 14px;
+}
+.footer__row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 .footer__social {
     display: flex;
     gap: 14px;
+    margin: 8px 0;
 }
-.footer__social a { display: inline-flex; }
 .footer__social svg { width: 16px; height: 16px; fill: currentColor; }
 
-.footer__right { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; direction: rtl; }
-.footer__row {
-    display: flex;
-    gap: 20px;
-    font-family: var(--font-he);
-    font-weight: 400;
-    font-size: 13px;
-    color: var(--c-white);
-}
-.footer__row a:hover { opacity: .7; }
-
-@media (max-width: 900px) {
-    .footer { flex-direction: column; padding: 24px 16px; gap: 16px; }
-    .footer__left, .footer__right { width: 100%; }
-    .footer__right { align-items: flex-start; }
-    .footer__row { flex-wrap: wrap; gap: 12px; }
+@media (min-width: 768px) {
+    .footer { padding: 32px 96px; }
+    .footer__inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    .footer__copy { text-align: left; max-width: 360px; }
+    .footer__links-mobile {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+    }
+    .footer__row { gap: 20px; }
 }
 
 /* ========================================================================
-   ARTIST PROFILE PAGE
+   PILL BADGES (used on exhibition / open-call status row)
    ======================================================================== */
-.artist-page {
-    background: var(--c-bg-soft);
-    padding: 48px 96px 32px;
-}
-.artist-hero {
-    display: grid;
-    grid-template-columns: 1fr 492px;
-    gap: 48px;
-    align-items: start;
-}
-.artist-hero__info { display: flex; flex-direction: column; gap: 24px; }
-.artist-hero__name {
+.pill-row {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-    text-align: center;
-}
-.artist-hero__name-first {
-    font-family: var(--font-en-display);
-    font-weight: 700;
-    font-size: 80px;
-    line-height: 0.95;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-}
-.artist-hero__name-last {
-    font-family: var(--font-en-display);
-    font-weight: 300;
-    font-size: 80px;
-    line-height: 0.95;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-}
-.artist-hero__handle {
-    font-family: var(--font-en);
-    font-weight: 300;
-    font-size: 28px;
-    text-align: right;
-    color: var(--c-grey-soft);
-    letter-spacing: 0.04em;
-}
-.artist-hero__bio { display: grid; grid-template-columns: 1px 1fr; gap: 16px; }
-.artist-hero__bio::before {
-    content: '';
-    background: var(--c-divider);
-    grid-column: 1;
-}
-.artist-hero__bio-text { grid-column: 2; }
-.artist-hero__bio-lead {
-    font-family: var(--font-he);
-    font-weight: 300;
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--c-black);
-    text-align: right;
-    margin-bottom: 16px;
-}
-.artist-hero__paragraph {
-    font-family: var(--font-he);
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--c-black);
-    text-align: right;
-    margin-bottom: 16px;
-}
-.artist-hero__image {
-    width: 492px;
-    height: 492px;
-    background: var(--c-divider) center/cover no-repeat;
-    position: relative;
-}
-.artist-hero__image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 60%);
-    pointer-events: none;
-}
-
-.artworks {
-    padding: 32px 96px;
-    background: var(--c-bg-soft);
-}
-.artworks__head { margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
-.artworks__title {
-    font-family: var(--font-en);
-    font-weight: 300;
-    font-size: 28px;
-    letter-spacing: 0.04em;
-    text-transform: lowercase;
-    text-align: right;
-}
-.artworks__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-}
-.artwork-card { display: flex; flex-direction: column; gap: 16px; }
-.artwork-card__image {
-    width: 100%;
-    aspect-ratio: 3/4;
-    background: var(--c-divider) center/cover no-repeat;
-}
-.artwork-card__title {
-    font-family: var(--font-he);
-    font-weight: 400;
-    font-size: 16px;
-    text-align: right;
-}
-.artwork-card__year {
-    font-family: var(--font-he);
-    font-weight: 300;
-    font-size: 14px;
-    color: var(--c-grey-meta);
-    text-align: right;
-}
-
-@media (max-width: 900px) {
-    .artist-page { padding: 24px 16px; }
-    .artist-hero { grid-template-columns: 1fr; gap: 24px; }
-    .artist-hero__image { width: 100%; height: auto; aspect-ratio: 1; }
-    .artist-hero__name-first, .artist-hero__name-last { font-size: 48px; }
-    .artist-hero__handle { font-size: 18px; }
-    .artworks { padding: 24px 16px; }
-    .artworks__grid { grid-template-columns: 1fr; gap: 24px; }
-}
-
-/* ========================================================================
-   EXHIBITION PAGE
-   ======================================================================== */
-.exh-status {
-    display: flex;
-    gap: 16px;
     justify-content: flex-end;
-    padding: 32px 96px 0;
+    gap: 16px;
+    padding: 24px 16px 0;
+    direction: rtl;
 }
-.exh-pill {
+.pill {
     border: 1px solid var(--c-black);
     padding: 4px 12px;
     font-family: var(--font-he);
     font-weight: 300;
-    font-size: 18px;
+    font-size: 16px;
 }
-.exh-pill--en { font-family: var(--font-en); font-size: 16px; text-transform: lowercase; letter-spacing: 0.06em; }
+.pill--en {
+    font-family: var(--font-en);
+    font-weight: 300;
+    font-size: 16px;
+    text-transform: lowercase;
+    letter-spacing: 0.06em;
+    direction: ltr;
+}
+.pill--archived { color: var(--c-grey-meta); }
 
-.exh-main {
-    padding: 32px 96px;
-    display: grid;
-    grid-template-columns: 1fr 492px;
-    gap: 48px;
-    align-items: start;
-}
-.exh-main__text {
-    font-family: var(--font-he);
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 1.8;
-    text-align: right;
-}
-.exh-main__text p { margin-bottom: 18px; }
-.exh-main__text p:last-child { margin-bottom: 0; }
-
+/* ========================================================================
+   EXHIBITION BANNER (390x520 mobile / wider desktop) with carousel dots
+   ======================================================================== */
 .exh-banner {
     position: relative;
-    width: 492px;
-    height: 744px;
+    width: 100%;
+    aspect-ratio: 390/520;
     background: var(--c-near-black) center/cover no-repeat;
     overflow: hidden;
 }
 .exh-banner::before {
     content: '';
     position: absolute; inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.5) 100%);
-    pointer-events: none;
+    background: linear-gradient(0deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.4) 100%);
 }
 .exh-banner__overlay {
     position: absolute;
-    left: 50%;
-    bottom: 80px;
-    transform: translateX(-50%);
+    left: 0; right: 0;
+    top: 35%;
     color: var(--c-white);
     text-align: center;
-    width: 80%;
     z-index: 1;
+    padding: 0 32px;
 }
 .exh-banner__row {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 13px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 .exh-banner__row span {
     font-family: var(--font-banner);
     font-weight: 300;
-    font-size: 26px;
+    font-size: 22px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
 }
-.exh-banner__dot {
+.exh-banner__dot-divider {
     width: 6px; height: 6px;
     background: var(--c-white);
-    border-radius: 300px;
+    border-radius: 50%;
     display: inline-block;
 }
 .exh-banner__title-he {
     font-family: var(--font-he);
     font-weight: 400;
-    font-size: 29px;
+    font-size: 26px;
     line-height: 1.3;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 .exh-banner__title-en {
     font-family: var(--font-banner);
     font-weight: 300;
-    font-size: 17px;
-    letter-spacing: 0.06em;
+    font-size: 16px;
+    letter-spacing: 0.04em;
     text-transform: lowercase;
 }
+.exh-banner__dots {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 1;
+}
+.exh-banner__dot {
+    width: 32px;
+    height: 2px;
+    background: var(--c-grey-dot);
+    transition: background .2s;
+}
+.exh-banner__dot[aria-current="true"] { background: var(--c-white); }
 
-@media (max-width: 900px) {
-    .exh-status { padding: 16px; gap: 8px; flex-wrap: wrap; }
-    .exh-pill { font-size: 14px; }
-    .exh-main { padding: 16px; grid-template-columns: 1fr; gap: 24px; }
-    .exh-banner { width: 100%; height: 520px; }
-    .exh-banner__overlay { width: 90%; bottom: 48px; }
-    .exh-banner__row span { font-size: 18px; }
-    .exh-banner__title-he { font-size: 22px; }
-    .exh-banner__title-en { font-size: 14px; }
+@media (min-width: 768px) {
+    .exh-banner { aspect-ratio: 492/744; max-width: 492px; margin: 0 auto; }
+    .exh-banner__row span { font-size: 26px; }
+    .exh-banner__title-he { font-size: 29px; }
+    .exh-banner__title-en { font-size: 17px; }
+}
+
+/* Wrapper that combines pill row + body + banner side-by-side on desktop */
+.exh-page {
+    display: flex;
+    flex-direction: column;
+}
+.exh-body {
+    padding: 24px 16px;
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.85;
+    text-align: right;
+}
+.exh-body p { margin-bottom: 16px; }
+
+@media (min-width: 768px) {
+    .exh-page__main {
+        display: grid;
+        grid-template-columns: 1fr 492px;
+        gap: 48px;
+        padding: 32px 96px;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: start;
+    }
+    .exh-body { padding: 0; font-size: 18px; }
 }
 
 /* ========================================================================
-   ARTISTS LIST  (used on exhibition pages and the all-artists page)
+   ARTIST PROFILE PAGE (mobile: profile image on top, then name, bio)
    ======================================================================== */
-.artists-list {
-    padding: 32px 96px;
+.artist-page { padding: 24px 16px; display: flex; flex-direction: column; gap: 16px; }
+.artist-page__image {
+    width: 262px;
+    height: 262px;
+    margin: 0 auto;
+    background: var(--c-divider) center/cover no-repeat;
 }
-.artists-list__head {
+.artist-page__name {
+    text-align: center;
+}
+.artist-page__name-first {
+    font-family: var(--font-en-display);
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.artist-page__name-last {
     font-family: var(--font-en);
     font-weight: 300;
-    font-size: 28px;
+    font-size: 36px;
+    line-height: 1;
     letter-spacing: 0.04em;
-    margin-bottom: 16px;
+    text-transform: uppercase;
+}
+.artist-page__handle {
+    font-family: var(--font-en);
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--c-grey-soft);
+    margin-top: 4px;
+}
+.artist-page__bio {
+    display: grid;
+    grid-template-columns: 1px 1fr;
+    gap: 16px;
+    padding: 24px 16px;
+}
+.artist-page__bio-divider { background: var(--c-divider); }
+.artist-page__bio-text {
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.7;
     text-align: right;
+}
+.artist-page__bio-text p { margin-bottom: 16px; }
+
+.artworks {
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.artworks__title {
+    font-family: var(--font-en);
+    font-weight: 300;
+    font-size: 20px;
+    text-align: right;
+    letter-spacing: 0.04em;
     text-transform: lowercase;
 }
-.artists-list__grid {
+.artworks__list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.artwork-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.artwork-card__image {
+    width: 100%;
+    aspect-ratio: 358/434;
+    background: var(--c-divider) center/cover no-repeat;
+}
+.artwork-card__title {
+    font-family: var(--font-he);
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+}
+.artwork-card__year {
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--c-grey-meta);
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .artist-page {
+        display: grid;
+        grid-template-columns: 1fr 492px;
+        gap: 48px;
+        padding: 48px 96px;
+        max-width: 1200px;
+        margin: 0 auto;
+        align-items: start;
+        background: var(--c-bg-soft);
+    }
+    .artist-page__image { width: 100%; height: auto; aspect-ratio: 1; max-width: 492px; order: 2; }
+    .artist-page__info { display: flex; flex-direction: column; gap: 24px; }
+    .artist-page__name { text-align: center; }
+    .artist-page__name-first, .artist-page__name-last { font-size: 80px; }
+    .artist-page__handle { font-size: 28px; }
+    .artist-page__bio { padding: 0; }
+    .artworks { padding: 32px 96px; max-width: 1200px; margin: 0 auto; background: var(--c-bg-soft); }
+    .artworks__title { font-size: 28px; }
+    .artworks__list { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .artwork-card__title, .artwork-card__year { text-align: right; }
+}
+
+/* ========================================================================
+   ARTISTS LIST (4-card horizontal row on mobile, grid on desktop)
+   ======================================================================== */
+.artists-list {
+    padding: 24px 16px;
+}
+.artists-list__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.artists-list__title {
+    font-family: var(--font-en);
+    font-weight: 300;
+    font-size: 20px;
+    text-align: right;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+}
+.artists-list__row {
     display: grid;
-    grid-template-columns: repeat(11, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 6px;
 }
 .artist-tile {
@@ -908,7 +1130,7 @@ body {
 }
 .artist-tile__image {
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 96/96;
     background: var(--c-divider) center/cover no-repeat;
 }
 .artist-tile__name {
@@ -922,313 +1144,472 @@ body {
 }
 .artist-tile__name span { display: block; }
 
-@media (max-width: 1200px) { .artists-list__grid { grid-template-columns: repeat(6, 1fr); } }
-@media (max-width: 768px)  {
-    .artists-list { padding: 16px; }
-    .artists-list__head { font-size: 20px; }
-    .artists-list__grid {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        padding-bottom: 12px;
-        scroll-snap-type: x mandatory;
-    }
-    .artist-tile { flex: 0 0 96px; scroll-snap-align: start; }
-    .artist-tile__name { font-size: 12px; }
+@media (min-width: 768px) {
+    .artists-list { padding: 32px 96px; max-width: 1200px; margin: 0 auto; }
+    .artists-list__title { font-size: 28px; }
+    .artists-list__row { grid-template-columns: repeat(11, 1fr); gap: 6px; }
 }
 
 /* ========================================================================
-   ARTICLE / PRESS PAGE
+   ARTICLE / PRESS PAGE (mobile-first article pattern)
    ======================================================================== */
-.article {
-    padding: 48px 96px;
-    max-width: 900px;
-    margin: 0 auto;
+.article-header {
+    padding: 32px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
 }
-.article__source {
-    font-family: var(--font-en);
+.article-source {
+    display: flex;
+    gap: 8px;
+    font-family: var(--font-he);
     font-weight: 300;
     font-size: 14px;
     color: var(--c-grey-meta);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 16px;
-    text-align: right;
+    align-items: center;
 }
-.article__title {
-    font-family: var(--font-he);
-    font-weight: 700;
-    font-size: 42px;
-    line-height: 1.25;
-    margin-bottom: 16px;
-    text-align: right;
-}
-.article__date {
-    font-family: var(--font-he);
-    font-size: 14px;
-    color: var(--c-grey-meta);
-    margin-bottom: 32px;
-    text-align: right;
-}
-.article__hero {
-    width: 100%;
-    aspect-ratio: 16/9;
-    background: var(--c-divider) center/cover no-repeat;
-    margin-bottom: 32px;
-}
-.article__body {
+.article-source__divider { color: var(--c-grey-meta); }
+.article-title {
     font-family: var(--font-he);
     font-weight: 400;
-    font-size: 18px;
-    line-height: 1.8;
-    text-align: right;
+    font-size: 28px;
+    line-height: 1.3;
+    text-align: center;
 }
-.article__body p { margin-bottom: 18px; }
-.article__body h2 {
+.article-subtitle {
     font-family: var(--font-he);
-    font-weight: 700;
-    font-size: 26px;
-    margin: 32px 0 16px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
 }
-.article__caption {
+.article-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-family: var(--font-he);
-    font-size: 13px;
+    font-weight: 300;
+    font-size: 14px;
     color: var(--c-grey-meta);
-    margin-bottom: 24px;
+}
+.article-meta__dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--c-grey-meta);
 }
 
-@media (max-width: 900px) {
-    .article { padding: 24px 16px; }
-    .article__title { font-size: 28px; }
-    .article__body { font-size: 16px; }
+.article-image {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+.article-image__media {
+    width: 100%;
+    aspect-ratio: 358/542;
+    background: var(--c-divider) center/cover no-repeat;
+}
+.article-image__caption {
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 13px;
+    color: var(--c-grey-meta);
+    margin-top: 8px;
+    text-align: right;
+}
+.article-body {
+    padding: 16px;
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.85;
+    text-align: right;
+}
+.article-body p { margin-bottom: 16px; }
+.article-body h2 {
+    font-family: var(--font-he);
+    font-weight: 700;
+    font-size: 22px;
+    margin: 24px 0 16px;
+}
+.article-readmore {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 24px 16px 16px;
+    font-family: var(--font-he);
+    font-weight: 400;
+    font-size: 16px;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+@media (min-width: 768px) {
+    .article-header { padding: 64px 96px 24px; max-width: 720px; margin: 0 auto; }
+    .article-title { font-size: 42px; }
+    .article-image { padding: 0 96px; max-width: 800px; margin: 0 auto 32px; }
+    .article-image__media { aspect-ratio: 16/9; }
+    .article-body { padding: 16px 96px; max-width: 720px; margin: 0 auto; font-size: 18px; }
 }
 
 /* ========================================================================
    OPEN CALL PAGE
    ======================================================================== */
-.opencall-page { padding: 48px 96px; }
+.opencall-page {
+    display: flex;
+    flex-direction: column;
+}
+.opencall-page__hero {
+    width: 100%;
+    aspect-ratio: 390/520;
+    background: var(--c-divider) center/cover no-repeat;
+}
+.opencall-page__info {
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 .opencall-page__title {
-    font-family: var(--font-he);
-    font-weight: 500;
-    font-size: 36px;
+    font-family: var(--font-en);
+    font-weight: 400;
+    font-size: 24px;
     text-align: right;
-    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+}
+.opencall-page__title em {
+    font-family: var(--font-he);
+    font-style: normal;
+    font-weight: 400;
 }
 .opencall-page__intro {
     font-family: var(--font-he);
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 1.8;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.7;
     text-align: right;
-    margin-bottom: 32px;
 }
-.opencall-page__list {
+.opencall-page__panel {
     background: var(--c-bg-soft);
-    padding: 32px;
-    margin-bottom: 32px;
+    padding: 16px;
+    margin: 16px;
     text-align: right;
     font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.8;
+}
+.opencall-page__panel h3 {
+    font-weight: 400;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+.opencall-page__cta {
+    padding: 24px 16px;
+    text-align: right;
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.8;
+}
+.opencall-page__cta a { text-decoration: underline; text-underline-offset: 4px; }
+.opencall-page__closed {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: var(--c-bg-soft);
+    color: var(--c-grey-meta);
+    font-family: var(--font-he);
+    font-weight: 400;
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    .opencall-page__hero { aspect-ratio: 16/9; max-height: 600px; }
+    .opencall-page__info, .opencall-page__cta { padding: 32px 96px; max-width: 800px; margin: 0 auto; }
+    .opencall-page__panel { margin: 16px 96px; max-width: 800px; margin-left: auto; margin-right: auto; padding: 32px; }
+    .opencall-page__title { font-size: 36px; text-align: center; }
+    .opencall-page__intro { text-align: center; max-width: 700px; margin: 0 auto; }
+}
+
+/* ========================================================================
+   EVENT PAGE (banner + 3-image collage + poetic body)
+   ======================================================================== */
+.event-page { display: flex; flex-direction: column; }
+.event-banner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 390/520;
+    background: var(--c-near-black) center/cover no-repeat;
+    overflow: hidden;
+    color: var(--c-white);
+}
+.event-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 100%);
+}
+.event-banner__title {
+    position: absolute;
+    left: 0; right: 0;
+    top: 38%;
+    text-align: center;
+    z-index: 1;
+    font-family: var(--font-en-display);
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1.1;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    padding: 0 32px;
+}
+.event-banner__subtitle {
+    position: absolute;
+    left: 0; right: 0;
+    top: 52%;
+    text-align: center;
+    z-index: 1;
+    font-family: var(--font-he);
+    font-size: 22px;
+    padding: 0 32px;
+}
+.event-banner__volume {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 24px;
+    text-align: center;
+    z-index: 1;
+    font-family: var(--font-en);
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.event-body {
+    padding: 32px 16px;
+    text-align: center;
+    font-family: var(--font-he);
+    font-weight: 300;
     font-size: 16px;
     line-height: 1.9;
 }
-.opencall-page__list h3 {
-    font-weight: 700;
-    font-size: 20px;
-    margin-bottom: 16px;
-}
-.opencall-page__cta {
-    border: 1px solid var(--c-black);
-    padding: 24px;
-    text-align: right;
-    margin-bottom: 16px;
-}
-.opencall-page__cta a { text-decoration: underline; }
-
-@media (max-width: 900px) {
-    .opencall-page { padding: 24px 16px; }
-    .opencall-page__title { font-size: 28px; }
-}
-
-/* ========================================================================
-   BIOGRAPHY (about) PAGE
-   ======================================================================== */
-.bio-hero {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16/9;
-    background: var(--c-near-black) center/cover no-repeat;
-    color: var(--c-white);
-    display: flex;
-    align-items: flex-end;
-    padding: 48px 96px;
-}
-.bio-hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 70%);
-}
-.bio-hero__name {
-    position: relative;
-    z-index: 1;
-    text-align: right;
-    width: 100%;
-}
-.bio-hero__name span {
-    display: block;
-    font-family: var(--font-en-display);
-    font-weight: 700;
-    font-size: 48px;
-    letter-spacing: 0.22em;
-    line-height: 1;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-}
-
-.bio-content {
-    padding: 48px 96px;
-    max-width: 900px;
-    margin: 0 auto;
-}
-.bio-content__heading {
-    font-family: var(--font-en);
-    font-weight: 400;
-    font-size: 24px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    text-align: right;
-}
-.bio-content__text {
-    font-family: var(--font-he);
-    font-size: 18px;
-    line-height: 1.8;
-    text-align: right;
-}
-.bio-content__text p { margin-bottom: 18px; }
-.bio-content__signature {
-    font-family: var(--font-en);
-    font-weight: 400;
-    font-size: 24px;
-    letter-spacing: 0.44em;
-    text-transform: lowercase;
-    margin: 32px 0;
-    text-align: right;
-}
-.bio-content__quote {
-    font-family: var(--font-en);
-    font-style: italic;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 1.6;
-    text-align: center;
-    padding: 32px;
-    border-top: 1px solid var(--c-divider);
-    border-bottom: 1px solid var(--c-divider);
-    margin: 32px 0;
-    text-transform: lowercase;
-}
-
-@media (max-width: 900px) {
-    .bio-hero { padding: 24px 16px; aspect-ratio: 4/5; }
-    .bio-hero__name span { font-size: 32px; }
-    .bio-content { padding: 32px 16px; }
-}
-
-/* ========================================================================
-   EVENTS PAGE
-   ======================================================================== */
-.event-hero {
-    padding: 48px 96px;
-    text-align: center;
-}
-.event-hero__title {
-    font-family: var(--font-he);
-    font-weight: 700;
-    font-size: 64px;
-    margin-bottom: 16px;
-}
-.event-hero__subtitle {
-    font-family: var(--font-en);
-    font-weight: 300;
-    font-size: 24px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--c-grey-soft);
-}
-.event-poem {
-    padding: 32px 96px;
-    max-width: 700px;
-    margin: 0 auto;
-    font-family: var(--font-he);
-    font-size: 20px;
-    line-height: 2;
-    text-align: center;
-    white-space: pre-line;
-}
-.event-meta {
-    padding: 32px 96px;
-    border-top: 1px solid var(--c-divider);
-    border-bottom: 1px solid var(--c-divider);
+.event-meta-line {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 32px;
+    gap: 12px;
+    font-family: var(--font-he);
+    font-size: 14px;
+    color: var(--c-black);
+    padding: 8px 16px;
+}
+.event-meta-line__sep { color: var(--c-grey-soft); }
+.event-poem {
+    padding: 16px;
     text-align: center;
     font-family: var(--font-he);
-    font-size: 18px;
-}
-.event-meta__item { display: flex; flex-direction: column; gap: 4px; }
-.event-meta__label {
-    font-family: var(--font-en);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--c-grey-meta);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.95;
+    white-space: pre-line;
 }
 
-@media (max-width: 900px) {
-    .event-hero { padding: 32px 16px; }
-    .event-hero__title { font-size: 40px; }
-    .event-poem, .event-meta { padding: 24px 16px; }
+.event-collage {
+    position: relative;
+    width: 100%;
+    height: 443px;
+    overflow: hidden;
+    margin: 16px 0;
+}
+.event-collage__main {
+    position: absolute;
+    left: 50%;
+    top: 33px;
+    transform: translateX(-50%);
+    width: 216px;
+    height: 378px;
+    background: var(--c-divider) center/cover no-repeat;
+}
+.event-collage__side-l, .event-collage__side-r {
+    position: absolute;
+    top: 120px;
+    width: 117px;
+    height: 204.75px;
+    background: var(--c-divider) center/cover no-repeat;
+    opacity: 0.6;
+}
+.event-collage__side-l { left: -58px; }
+.event-collage__side-r { right: -58px; }
+
+@media (min-width: 768px) {
+    .event-banner { aspect-ratio: 16/7; max-height: 600px; }
+    .event-banner__title { font-size: 64px; }
+    .event-collage { height: 600px; max-width: 800px; margin: 32px auto; }
+    .event-collage__main { width: 320px; height: 540px; top: 32px; }
+    .event-collage__side-l, .event-collage__side-r { width: 200px; height: 350px; top: 140px; }
+    .event-collage__side-l { left: 8%; }
+    .event-collage__side-r { right: 8%; }
 }
 
 /* ========================================================================
-   UTILITIES
+   BIOGRAPHY (Erez) PAGE — mobile uses absolute name overlay on hero
    ======================================================================== */
-.divider {
-    height: 1px;
-    background: var(--c-divider);
-    margin: 48px 0;
+.bio-page { display: flex; flex-direction: column; }
+.bio-hero {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 358/448;
+    background: var(--c-near-black) center/cover no-repeat;
+    overflow: hidden;
 }
-.text-link {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+.bio-hero__name {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 24px;
+    text-align: right;
+    color: var(--c-white);
+    padding: 0 16px;
+    font-family: var(--font-en-display);
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
 }
-.scroll-hint {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+.bio-hero__name span { display: block; margin-bottom: 4px; }
+.bio-hero__name span:nth-child(1) { padding-right: 40px; }
+.bio-hero__name span:nth-child(2) { padding-right: 0; }
+.bio-hero__name span:nth-child(3) { padding-right: 80px; }
+
+.bio-body {
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.bio-body__heading {
     font-family: var(--font-en);
-    font-size: 14px;
+    font-weight: 400;
+    font-size: 22px;
     letter-spacing: 0.04em;
+    text-align: right;
+}
+.bio-body__text {
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.7;
+    text-align: right;
+}
+.bio-body__text p { margin-bottom: 16px; }
+.bio-body__signature {
+    font-family: var(--font-en);
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0.32em;
+    text-align: left;
     text-transform: lowercase;
-    color: var(--c-grey-meta);
-    margin-top: 24px;
+    padding: 24px 0;
+}
+.bio-body__quote {
+    font-family: var(--font-en);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+    padding: 24px 8px;
+    border-top: 1px solid var(--c-divider);
+    border-bottom: 1px solid var(--c-divider);
+    text-transform: lowercase;
+}
+.bio-body__quote::before { content: '"'; font-size: 40px; vertical-align: top; }
+.bio-body__quote::after  { content: '"'; font-size: 40px; vertical-align: bottom; }
+
+@media (min-width: 768px) {
+    .bio-hero { aspect-ratio: 16/7; max-height: 560px; }
+    .bio-hero__name { font-size: 64px; right: 96px; bottom: 64px; left: auto; }
+    .bio-body { padding: 48px 96px; max-width: 800px; margin: 0 auto; }
+    .bio-body__text { font-size: 18px; }
 }
 
-/* fade-in animation for images */
-.fade-in { opacity: 0; transition: opacity .8s ease; }
-.fade-in.is-loaded { opacity: 1; }
+/* ========================================================================
+   CONTACT PAGE
+   ======================================================================== */
+.contact-page {
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.contact-page h1 {
+    font-family: var(--font-he);
+    font-weight: 400;
+    font-size: 28px;
+    text-align: right;
+}
+.contact-page__info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: right;
+    font-family: var(--font-he);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.7;
+}
+.contact-page__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.contact-page__form label {
+    font-family: var(--font-he);
+    font-size: 13px;
+    color: var(--c-grey-meta);
+    text-align: right;
+}
+.contact-page__form input,
+.contact-page__form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--c-divider);
+    font-family: var(--font-he);
+    font-size: 15px;
+    margin-top: 4px;
+    text-align: right;
+}
+.contact-page__form button {
+    margin-top: 8px;
+    padding: 14px;
+    background: var(--c-black);
+    color: var(--c-white);
+    font-family: var(--font-button);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .contact-page { padding: 48px 96px; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .contact-page h1 { grid-column: 1 / -1; font-size: 36px; }
+}
+
+/* ========================================================================
+   READ-MORE LINK / GENERIC HELPERS
+   ======================================================================== */
+.text-link { text-decoration: underline; text-underline-offset: 4px; }
+.divider-h { height: 1px; background: var(--c-divider); }
 </style>
 </head>
 <body>
 
-<!-- Navigation: logo LEFT, links RIGHT -->
+<!-- Mobile-first nav: SVG logo + hamburger.  Desktop: full link bar. -->
 <header class="nav">
-    <a href="index.html" class="nav__logo" aria-label="Z&amp;R Home">
-        <img src="https://yairixstudio.github.io/zielinski-rozen-galleries/assets/icons/logo.svg" alt="Zielinski &amp; Rozen — The Art Galleries">
+    <a href="index.html" class="nav__logo">
+        <img src="https://yairixstudio.github.io/zielinski-rozen-galleries/assets/icons/logo.svg" alt="Zielinski &amp; Rozen">
     </a>
-    <button class="nav__toggle" aria-label="Toggle menu" data-menu>
+    <button class="nav__toggle" aria-label="Open menu" aria-expanded="false" data-menu>
         <span></span><span></span><span></span>
     </button>
     <nav class="nav__menu">
@@ -1237,160 +1618,219 @@ body {
         <a href="works.html"        class="nav__link">the art works</a>
         <a href="galleries.html"    class="nav__link">the galleries</a>
         <a href="press.html"        class="nav__link">press &amp; events</a>
+        <a href="about.html"        class="nav__link">about</a>
     </nav>
 </header>
 
-<!-- Hero -->
+<!-- HERO -->
 <section class="hero">
-    <h1 class="hero__title">THE ART GALLERIES</h1>
-    <p class="hero__subtitle">Zielinski &amp; Rozen</p>
-    <p class="hero__desc">
-        ארז זילינסקי-רוזן, קודם כול אמן.<br>
-        עולם הבישום עבורו הוא קנבס בלתי נראה שנבנה משכבות של רגש וזיכרון.
-    </p>
+    <div class="hero__title-block">
+        <h1 class="hero__title">THE ART<br>GALLERIES</h1>
+        <p class="hero__subtitle">Zielinski &amp; Rozen</p>
+    </div>
     <div class="hero__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-hero.png')"></div>
+    <div class="hero__bottom">
+        <a href="#open-call" class="hero__scroll" aria-label="scroll down">
+            <span>scroll</span>
+            <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 12L3 7h10z"/></svg>
+        </a>
+        <p class="hero__desc">
+            ארז זילינסקי-רוזן, קודם כול אמן.<br>
+            עולם הבישום עבורו הוא קנבס בלתי נראה שנבנה משכבות של רגש וזיכרון.
+        </p>
+    </div>
 </section>
 
-<!-- Black announcement strip -->
-<div class="announcement">coming soon · our europe galleries</div>
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement">coming soon our europe galleries</div>
 
-<!-- The Open Call -->
-<section class="section">
-    <div class="section__head">
-        <h2 class="section__title">The Open Call</h2>
+<!-- OPEN CALL: dual-image collage + info bar -->
+<section class="opencall-section" id="open-call">
+    <h2 class="opencall-title">קול קורא</h2>
+    <div class="divider"></div>
+    <a href="opencall.html" class="opencall-collage" aria-label="View open call">
+        <div class="opencall-collage__main"   style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-opencall-howmany-poster.png')"></div>
+        <div class="opencall-collage__side"   style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-opencall-peeler-poster.png')"></div>
+    </a>
+    <div class="opencall-bar">
+        <span>online</span>
+        <span class="opencall-bar__date">23.4.2026</span>
+        <span class="opencall-bar__loc">tel aviv</span>
     </div>
-    <div class="opencall-grid">
-        <a href="opencall-peeler.html" class="opencall-card">
-            <div class="opencall-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-opencall-peeler-poster.png')"></div>
-            <div class="opencall-card__meta">
-                <span class="opencall-card__status">archived</span>
-                <span>23.4.2026</span>
-                <span>tel aviv</span>
+</section>
+
+<!-- EXHIBITIONS NOW -->
+<section class="exh-now">
+    <div class="section__head">
+        <h2 class="section__title section__title--big">exhibitions</h2>
+        <p class="section__subtitle section__subtitle--big">now</p>
+    </div>
+    <div class="exh-now__pair">
+        <a href="exhibition-howmany.html" class="exh-now__col">
+            <p class="exh-now__col-title">גלריית כיכר דיזינגוף</p>
+            <div class="exh-now__card" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/exhibition-howmany-banner.png')">
+                <span class="exh-now__status">upcoming</span>
+                <span class="exh-now__overlay">how many partners have you had?</span>
             </div>
         </a>
-        <a href="opencall.html" class="opencall-card">
-            <div class="opencall-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-opencall-howmany-poster.png')"></div>
-            <div class="opencall-card__meta">
-                <span class="opencall-card__status">archived</span>
-                <span>23.4.2026</span>
-                <span>tel aviv</span>
+        <a href="exhibition-loneliness.html" class="exh-now__col">
+            <p class="exh-now__col-title">גלריית כיכר המדינה</p>
+            <div class="exh-now__card" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/exhibition-loneliness-banner.png')">
+                <span class="exh-now__status">current</span>
+                <span class="exh-now__overlay">exhibition volume 1<br>בדידות בסביבה תוססת</span>
             </div>
+        </a>
+    </div>
+
+    <div class="exh-now__artists">
+        <span class="exh-now__artists-label">our artists</span>
+        <a href="artists.html" class="text-link" style="font-family:var(--font-en); font-size:14px; letter-spacing:0.06em;">view all →</a>
+    </div>
+    <div class="artists-row">
+        <a href="artist-alon.html" class="artist-tile">
+            <div class="artist-tile__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/artist-zohar-ron.png')"></div>
+            <span class="artist-tile__name"><span>zohar</span><span>ron</span></span>
+        </a>
+        <a href="artist-alon.html" class="artist-tile">
+            <div class="artist-tile__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/artist-eitan-goldson.png')"></div>
+            <span class="artist-tile__name"><span>eitan</span><span>goldson</span></span>
+        </a>
+        <a href="artist-alon.html" class="artist-tile">
+            <div class="artist-tile__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/artist-alon-manjoch.png')"></div>
+            <span class="artist-tile__name"><span>alon</span><span>manjoch</span></span>
+        </a>
+        <a href="artist-alon.html" class="artist-tile">
+            <div class="artist-tile__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/artist-tal-holy-kadosh.png')"></div>
+            <span class="artist-tile__name"><span>tal</span><span>kadosh</span></span>
         </a>
     </div>
 </section>
 
-<!-- Exhibitions / Archive -->
-<section class="section section--soft">
+<!-- EXHIBITIONS ARCHIVE -->
+<section class="exh-archive">
     <div class="section__head">
-        <h2 class="section__title">Exhibitions</h2>
-        <p class="section__subtitle">Archive</p>
+        <h2 class="section__title section__title--big">exhibitions</h2>
+        <p class="section__subtitle section__subtitle--big">archive</p>
     </div>
-
-    <div class="exhibitions-archive">
-        <div class="exhibitions-row">
-            <p class="exhibitions-row__title">גלריית כיכר דיזינגוף</p>
-            <div class="exhibitions-grid">
-                <a href="exhibition-howmany.html" class="exhibitions-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-1.png')"></a>
-                <a href="exhibition-howmany.html" class="exhibitions-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-2.png')"></a>
-                <a href="exhibition-howmany.html" class="exhibitions-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-3.png')"></a>
-                <a href="exhibition-howmany.html" class="exhibitions-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-4.png')"></a>
-            </div>
-            <div class="exhibitions-row__nums"><span>01</span><span>02</span><span>03</span><span>04</span></div>
-        </div>
-        <div class="exhibitions-row">
-            <p class="exhibitions-row__title">גלריית כיכר המדינה</p>
-            <div class="exhibitions-grid">
-                <a href="exhibition-loneliness.html" class="exhibitions-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-1.png')"></a>
-                <a href="exhibition-loneliness.html" class="exhibitions-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-2.png')"></a>
-                <a href="exhibition-loneliness.html" class="exhibitions-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-3.png')"></a>
-                <a href="exhibition-loneliness.html" class="exhibitions-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-4.png')"></a>
-            </div>
-            <div class="exhibitions-row__nums"><span>01</span><span>02</span><span>03</span><span>04</span></div>
-        </div>
+    <div class="exh-archive__pills">
+        <span class="exh-archive__pill" aria-current="true">גלריית כיכר דיזינגוף</span>
+        <span class="exh-archive__pill">גלריית כיכר המדינה</span>
+    </div>
+    <div class="exh-archive__row">
+        <a href="exhibition-howmany.html" class="exh-archive__col">
+            <span class="exh-archive__num">01</span>
+            <div class="exh-archive__thumb" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-1.png')"></div>
+        </a>
+        <a href="exhibition-howmany.html" class="exh-archive__col">
+            <span class="exh-archive__num">02</span>
+            <div class="exh-archive__thumb" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-2.png')"></div>
+        </a>
+        <a href="exhibition-howmany.html" class="exh-archive__col">
+            <span class="exh-archive__num">03</span>
+            <div class="exh-archive__thumb" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-3.png')"></div>
+        </a>
+        <a href="exhibition-howmany.html" class="exh-archive__col">
+            <span class="exh-archive__num">04</span>
+            <div class="exh-archive__thumb" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-archive-thumb-4.png')"></div>
+        </a>
     </div>
 </section>
 
-<!-- THE / ART / WORKS / MORE — editorial layout -->
+<!-- THE / ART / WORKS / MORE -->
 <section class="work-section">
-    <a href="works.html" class="work-row work-row--word-right">
-        <div class="work-row__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-the.png')"></div>
-        <span class="work-row__word">the</span>
-    </a>
-    <a href="works.html" class="work-row work-row--word-left">
-        <span class="work-row__word">art</span>
-        <div class="work-row__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-art.png')"></div>
-    </a>
-    <a href="works.html" class="work-row work-row--word-right">
-        <div class="work-row__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-works.png')"></div>
-        <span class="work-row__word">works</span>
-    </a>
-    <a href="works.html" class="work-row work-row--word-left">
-        <span class="work-row__word work-row__word--more">more</span>
-        <div class="work-row__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-more.png')"></div>
-    </a>
+    <!-- Mobile: absolute collage -->
+    <div class="work-collage">
+        <div class="work-collage__img work-collage__img--1" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-the.png')"></div>
+        <span class="work-collage__word work-collage__word--the">the</span>
+        <span class="work-collage__word work-collage__word--art">ART</span>
+        <div class="work-collage__img work-collage__img--2" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-art.png')"></div>
+        <div class="work-collage__img work-collage__img--3" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-works.png')"></div>
+        <span class="work-collage__word work-collage__word--works">works</span>
+        <div class="work-collage__img work-collage__img--4" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-more.png')"></div>
+        <a href="works.html" class="work-collage__more">more</a>
+    </div>
+
+    <!-- Desktop: editorial alternating rows -->
+    <div class="work-rows">
+        <a href="works.html" class="work-row work-row--word-right">
+            <div class="work-row__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-the.png')"></div>
+            <span class="work-row__word">the</span>
+        </a>
+        <a href="works.html" class="work-row work-row--word-left">
+            <span class="work-row__word work-row__word--light">art</span>
+            <div class="work-row__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-art.png')"></div>
+        </a>
+        <a href="works.html" class="work-row work-row--word-right">
+            <div class="work-row__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-works.png')"></div>
+            <span class="work-row__word">works</span>
+        </a>
+        <a href="works.html" class="work-row work-row--word-left">
+            <span class="work-row__word work-row__word--more">more</span>
+            <div class="work-row__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-work-more.png')"></div>
+        </a>
+    </div>
 </section>
 
-<!-- Instagram strip -->
+<!-- INSTAGRAM STRIP -->
 <section class="ig-section">
-    <h2 class="ig-section__title">FOLLOW US<small>ON INSTAGRAM</small></h2>
-    <div class="ig-grid">
-        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-1.png')"></a>
-        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-2.png')"></a>
-        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-3.png')"></a>
-        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-4.png')"></a>
-        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-5.png')"></a>
-        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-6.png')"></a>
-        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-7.png')"></a>
-        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-8.png')"></a>
-        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-grid__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-9.png')"></a>
+    <h2 class="ig-section__title">follow us<br>on instagram</h2>
+    <div class="ig-strip">
+        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-strip__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-1.png')"></a>
+        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-strip__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-2.png')"></a>
+        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-strip__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-3.png')"></a>
+        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-strip__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-4.png')"></a>
+        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-strip__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-5.png')"></a>
+        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-strip__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-6.png')"></a>
+        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-strip__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-7.png')"></a>
+        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-strip__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-8.png')"></a>
+        <a href="https://instagram.com/zielinskirozen.gallery" class="ig-strip__item" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-instagram-9.png')"></a>
     </div>
 </section>
 
-<!-- The Galleries -->
-<section class="section">
+<!-- THE GALLERIES -->
+<section class="galleries-section">
     <div class="section__head">
-        <h2 class="section__title">The Galleries</h2>
-        <p class="section__subtitle">Tel Aviv</p>
+        <h2 class="section__title">the galleries</h2>
+        <p class="section__subtitle">tel aviv</p>
     </div>
-    <div class="galleries-grid">
-        <a href="galleries.html#hamedina" class="gallery-card">
-            <div class="gallery-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-gallery-hamedina.png')"></div>
-            <h3 class="gallery-card__name">גלריית כיכר המדינה</h3>
-            <p class="gallery-card__addr">ז'בוטינסקי 131, תל אביב</p>
-            <ul class="gallery-card__hours">
-                <li>א'-ה' 10:00–19:00</li>
-                <li>ו' 10:00–14:00 · שבת סגור</li>
-            </ul>
+    <div class="gallery-rows">
+        <a href="galleries.html#hamedina" class="gallery-row">
+            <div class="gallery-row__media">
+                <div class="gallery-row__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-gallery-hamedina.png')"></div>
+                <p class="gallery-row__addr">ז'בוטינסקי 131, תל אביב</p>
+                <ul class="gallery-row__hours">
+                    <li>א'-ה' 10:00-19:00</li>
+                    <li>ו' 10:00-14:00</li>
+                    <li>שבת סגור</li>
+                </ul>
+            </div>
+            <h3 class="gallery-row__name">גלריית כיכר המדינה</h3>
         </a>
-        <a href="galleries.html#dizengoff" class="gallery-card">
-            <div class="gallery-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-gallery-dizengoff.png')"></div>
-            <h3 class="gallery-card__name">גלריית כיכר דיזינגוף</h3>
-            <p class="gallery-card__addr">כיכר דיזינגוף, תל אביב</p>
-            <ul class="gallery-card__hours">
-                <li>א'-ה' 10:00–19:00</li>
-                <li>ו' 10:00–14:00 · שבת סגור</li>
-            </ul>
+        <a href="galleries.html#dizengoff" class="gallery-row">
+            <div class="gallery-row__media">
+                <div class="gallery-row__image gallery-row__image--soon" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-gallery-dizengoff.png')"></div>
+                <p class="gallery-row__addr">כיכר דיזינגוף, תל אביב</p>
+            </div>
+            <h3 class="gallery-row__name">גלריית כיכר דיזינגוף</h3>
         </a>
-        <a href="galleries.html#flea" class="gallery-card">
-            <div class="gallery-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-gallery-dizengoff.png')"></div>
-            <h3 class="gallery-card__name">גלריית שוק הפשפשים</h3>
-            <p class="gallery-card__addr">שוק הפשפשים, תל אביב</p>
-            <ul class="gallery-card__hours">
-                <li>א'-ה' 10:00–19:00</li>
-                <li>ו' 10:00–14:00 · שבת סגור</li>
-            </ul>
+        <a href="galleries.html#flea" class="gallery-row">
+            <div class="gallery-row__media">
+                <div class="gallery-row__image gallery-row__image--soon" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-gallery-dizengoff.png')"></div>
+                <p class="gallery-row__addr">שוק הפשפשים, תל אביב</p>
+            </div>
+            <h3 class="gallery-row__name">גלריית שוק הפשפשים</h3>
         </a>
     </div>
 </section>
 
-<!-- Press & Events -->
-<section class="section">
-    <div class="section__head" style="text-align:left;">
-        <h2 class="section__title" style="display:block; text-align:left;">PRESS</h2>
-        <p class="section__subtitle" style="text-align:left;">&amp; EVENTS</p>
+<!-- PRESS & EVENTS -->
+<section class="press-section">
+    <div class="section__head">
+        <h2 class="section__title">press</h2>
+        <p class="section__subtitle">&amp; events</p>
     </div>
-    <div class="press-grid">
-        <a href="press-walla.html" class="press-card">
+    <div class="press-list">
+        <a href="press.html" class="press-card">
             <div class="press-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-press-portfolio.png')"></div>
             <div class="press-card__body">
                 <span class="press-card__source">מגזין פורטפוליו</span>
@@ -1407,15 +1847,15 @@ body {
             </div>
         </a>
         <a href="event-ktuba.html" class="press-card">
-            <div class="press-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-press-event-loneliness.png')"></div>
+            <div class="press-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-press-event-ktuba.png')"></div>
             <div class="press-card__body">
                 <span class="press-card__source">gallery event</span>
                 <h3 class="press-card__title">בדידות בתוך סביבה תוססת</h3>
                 <span class="press-card__date">25.2.2026</span>
             </div>
         </a>
-        <a href="event-ktuba.html" class="press-card">
-            <div class="press-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-press-event-ktuba.png')"></div>
+        <a href="press.html" class="press-card">
+            <div class="press-card__image" style="background-image:url('https://yairixstudio.github.io/zielinski-rozen-galleries/assets/img/home-press-event-loneliness.png')"></div>
             <div class="press-card__body">
                 <span class="press-card__source">gallery event</span>
                 <h3 class="press-card__title">בדידות בתוך סביבה תוססת</h3>
@@ -1425,7 +1865,7 @@ body {
     </div>
 </section>
 
-<!-- Newsletter -->
+<!-- NEWSLETTER -->
 <section class="newsletter">
     <div class="newsletter__inner">
         <h2 class="newsletter__title">Stay Informed</h2>
@@ -1436,28 +1876,25 @@ body {
     </div>
 </section>
 
-<!-- Footer -->
+<!-- FOOTER -->
 <footer class="footer">
-    <div class="footer__left">
+    <div class="footer__inner">
         <div class="footer__social">
-            <a href="https://facebook.com/zielinskirozen" aria-label="Facebook">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </a>
-            <a href="https://instagram.com/zielinskirozen.gallery" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.16c3.2 0 3.58.012 4.85.07 1.17.054 1.8.249 2.23.413.56.217.96.477 1.38.896.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.012 3.58-.07 4.85c-.054 1.17-.249 1.8-.413 2.23a3.71 3.71 0 0 1-.896 1.38 3.71 3.71 0 0 1-1.38.9c-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.012-4.85-.07c-1.17-.054-1.8-.249-2.23-.413a3.71 3.71 0 0 1-1.38-.896 3.71 3.71 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.012-3.58.07-4.85c.054-1.17.249-1.8.413-2.23.217-.56.477-.96.896-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.18 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.014 7.05.072c-1.28.06-2.15.26-2.91.55a5.86 5.86 0 0 0-2.13 1.39 5.86 5.86 0 0 0-1.39 2.13c-.29.76-.49 1.63-.55 2.91C0.014 8.33 0 8.74 0 12s.014 3.67.072 4.95c.06 1.28.26 2.15.55 2.91a5.86 5.86 0 0 0 1.39 2.13 5.86 5.86 0 0 0 2.13 1.39c.76.29 1.63.49 2.91.55C8.33 23.99 8.74 24 12 24s3.67-.014 4.95-.072c1.28-.06 2.15-.26 2.91-.55a5.86 5.86 0 0 0 2.13-1.39 5.86 5.86 0 0 0 1.39-2.13c.29-.76.49-1.63.55-2.91.06-1.28.072-1.69.072-4.95s-.014-3.67-.072-4.95c-.06-1.28-.26-2.15-.55-2.91a5.86 5.86 0 0 0-1.39-2.13A5.86 5.86 0 0 0 19.86.62c-.76-.29-1.63-.49-2.91-.55C15.67.014 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 12 8a4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>
-            </a>
+            <a href="https://instagram.com/zielinskirozen.gallery" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.33.014 7.05.072c-1.28.06-2.15.26-2.91.55a5.86 5.86 0 0 0-2.13 1.39 5.86 5.86 0 0 0-1.39 2.13c-.29.76-.49 1.63-.55 2.91C0.014 8.33 0 8.74 0 12s.014 3.67.072 4.95c.06 1.28.26 2.15.55 2.91a5.86 5.86 0 0 0 1.39 2.13 5.86 5.86 0 0 0 2.13 1.39c.76.29 1.63.49 2.91.55C8.33 23.99 8.74 24 12 24s3.67-.014 4.95-.072c1.28-.06 2.15-.26 2.91-.55a5.86 5.86 0 0 0 2.13-1.39 5.86 5.86 0 0 0 1.39-2.13c.29-.76.49-1.63.55-2.91.06-1.28.072-1.69.072-4.95s-.014-3.67-.072-4.95c-.06-1.28-.26-2.15-.55-2.91a5.86 5.86 0 0 0-1.39-2.13A5.86 5.86 0 0 0 19.86.62c-.76-.29-1.63-.49-2.91-.55C15.67.014 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 12 8a4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg></a>
+            <a href="https://facebook.com/zielinskirozen" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            <a href="mailto:korinalove5@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
         </div>
         <p class="footer__copy">© 2026 THE ART GALLERY ZIELINSKI &amp; ROZEN — ALL RIGHTS RESERVED.</p>
-    </div>
-    <div class="footer__right">
-        <div class="footer__row">
-            <a href="contact.html">יצירת קשר</a>
-            <a href="contact.html">הצהרת נגישות</a>
-        </div>
-        <div class="footer__row">
-            <a href="galleries.html#hamedina">גלריית כיכר המדינה</a>
-            <a href="galleries.html#dizengoff">גלריית כיכר דיזינגוף</a>
-            <a href="galleries.html#flea">גלריית שוק הפשפשים</a>
+        <div class="footer__links-mobile">
+            <div class="footer__row">
+                <a href="contact.html">יצירת קשר</a>
+                <a href="contact.html">הצהרת נגישות</a>
+            </div>
+            <div class="footer__row">
+                <a href="galleries.html#hamedina">גלריית כיכר המדינה</a>
+                <a href="galleries.html#dizengoff">גלריית כיכר דיזינגוף</a>
+                <a href="galleries.html#flea">גלריית שוק הפשפשים</a>
+            </div>
         </div>
     </div>
 </footer>
